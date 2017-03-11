@@ -7,3 +7,5 @@ Mestrado Integrado em Eng. Informática - 1º ano - Universidade do Minho
 
 * João Pires Barreira (@jpiresbarreira)
 * Sofia Carvalho
+
+__WARNING!__: Projeto antigo e provavelmente incompleto/disfuncional
