@@ -1,0 +1,229 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[portuges]{babel} 
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\title{\huge{\textit{Lightbot} em Haskell}}
+
+\author{João Barreira (A73831)\\
+   Sofia Carvalho (A76658)}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{center}
+\end{center}
+
+\linespread{1.5}
+\newpage
+\textsf{\tableofcontents}
+\newpage
+
+\begin{abstract}
+\textsf{Nas aulas de Laboratórios de Informática 1, unidade curricular lecionada no primeiro ano do curso de Licenciatura em Engenharia Informática, foi-nos proposto programar em Haskell o puzzle \textit{LightBot}. \newline \indent Este puzzle baseia-se em controlar um \textit{robot} num tabuleiro de blocos, utlizando, para isso, um conjunto de comandos. \newline \indent O principal objetivo do puzzle é acender todas as lâmpadas disponíveis. \newline \indent Para tal, são-lhe aplicados certos comandos: 
+\begin{enumerate}
+\item \textbf{A} (avançar)
+\item \textbf{S} (saltar)
+\item \textbf{E} (virar à esquerda)
+\item \textbf{D} (virar à direira)
+\item \textbf{L} (acender a luz)
+\end{enumerate} }
+\textsf{Quando todas as \textit{lâmpadas} do tabuleiro se encontram ligadas, o pograma imprime uma linha com a mensagem "FIM" e termina, mesmo que ainda existam comandos não processados. Se a sequência de comandos terminar sem que todas as lâmpadas se encontrem ligadas, o programa imprime a mensagem "INCOMPLETO".}
+\end{abstract}
+
+\newpage
+
+\section{Introdução}
+\textsf{ \indent O puzzle \textit{LightBot} consiste num \textit{robot} que se desloca num tabuleiro de blocos por intermédio de comandos que permitem concretizar o objetivo do puzzle: acender todas as lâmpadas disponíveis. \newline \indent O formato de entrada é sempre o mesmo para todas as tarefas: o \textit{robot} recebe um tabuleiro onde se irá mover, a posi\c{c}ão e a orient\c{c}ão inicial do \textit{robot} e a linha de comandos que controla a a\c{c}ão do \textit{robot}. O formato de saída é específico para cada uma das tarefas propostas.\newline \indent Este projeto, que consiste em pequenas aplica\c{c}ões \textit{Haskell}, está dividido em duas partes que estão, consequentemente, divididas em tarefas. 
+\begin{enumerate}
+\item Parte 1
+\begin{itemize}
+\item Tarefa 1
+\item Tarefa 2
+\item Tarefa 3
+\end{itemize}
+\item Parte 2
+\begin{itemize}
+\item Tarefa 4
+\item Tarefa 5 
+\end{itemize}
+\end{enumerate}}
+
+
+\newpage
+\section{Desenvolvimento}
+
+\subsection{Valida\c{c}ão do tabuleiro}
+ \textsf{ \indent Nesta primeira tarefa do projeto, pretende-se realizar um programa que permita verificar se o \textit {input} fornecido cumpre os requisitos impostos:}
+ \begin{itemize}
+ 
+\item \textsf{O tabuleiro fornecido tem dimensão \textit{m} x \textit{n} e é representado por \textit{n} linhas contendo cada uma delas uma sequência de \textit{m} letras (\textit{m}, \textit{n} > 0). Estes caracteres alfabéticos representam diferentes níveis: o  caracter a ou A corresponde ao nível 0; o caracter b ou B corresponde ao nível 1; o c ou C corresponde ao 2; e assim sucessivamente. As letras maiúsculas sinalizam que a posição tem uma "lâmpada". A posição com coordenadas (0,0) corresponde ao primeiro caracter da linha do tabuleiro fornecido. 
+\item O estado inicial do \textit{robot} é representado por uma única linha que contém o x e o y em que se encontra o \textit{robot} e um caracter que indica a orientação. O x é sempre >= que 0 mas < que \textit{m} e o y  é sempre >= que 0 mas < que {n}. Os caracteres que indicam a orientação inicial do \textit{robot} podem ser \textbf{N}, \textbf{E}, \textbf{S} ou \textbf{O}.
+\item Os comandos são apresentados por uma sequência não vazia construída por caracteres: \begin{itemize}
+\item \textbf{A} - avan\c{c}ar
+\item \textbf{S} - saltar
+\item \textbf{E} - esquerda
+\item \textbf {D} - direita
+\item \textbf{L} - luz 
+\end{itemize}}
+\end{itemize}
+
+\newpage
+\textsf{Um exemplo de um dado de entrada \underline{válido} nesta tarefa é:\newline \indent \indent bbcdA\newline\indent\indent ddCaa\newline\indent\indent bbCaa\newline\indent\indent 0 1 N\newline\indent\indent SEASLEASDSAL
+\newline \indent Um exemplo de um dado de entrada \underline{inválido} para esta tarefa é: \newline\indent\indent bbcdA \newline\indent\indent ddCaa \newline\indent\indent bbCaa \newline\indent\indent 0 G N \newline\indent\indent SEASLEASDSAL}
+\newline \textsf{\indent O programa desenvolvido imprime uma única linha de resultado. Se o formato do \textit{input} estiver de acordo com as restr\c{c}ões, é impressa a mensagem "\textbf{OK}". Por outro lado, se o formato não estiver de acordo com as restri\c{c}ões, o programa imprime a primeira linha em que os dados divergem do formato prescrito.}
+
+\textsf{ A fun\c{c}ão principal do nosso código desta Tarefa 1 é a \textcolor{cyan}{tarefa1}. O valor 0 é identificativo de que não há erro; quando há, é-nos mostrada a linha onde tal erro come\c{c}a.\newline \indent A fun\c{c}ão \textcolor{cyan}{validaTab} é responsável pela valida\c{c}ão das linhas do tabuleiro: valida todas as linhas entre a primeira linha e a linha imediatamente anterior à linha de posi\c{c}ão. Na cria\c{c}o desta \textcolor{cyan}{validaTab} foi criada uma fun\c{c}ão auxiliar, a fun\c{c}ão \textcolor{cyan}{testaLetras}, que verifica se todos os elementos de uma string são letras. \newline \indent \textcolor{cyan}{validaLPos} é a fun\c{c}ão responsável pela valida\c{c}ão da linha de posição. Esta fun\c{c}ão do tipo \textit{case} verifica se:
+\begin{enumerate}
+\item o último elemento da string, que corresponde à orienta\c{c}ão, é um \textbf{N}, um \textbf{S}, um \textbf{E} ou um \textbf{O};
+\item os dois primeiros elementos da string são dígitos e se estão dentro das dimensões do tabuleiro. Para tal, têm de ser menores que o número de colunas e de linhas, respetivamente;
+\item existem apenas dois caracteres espaço na string (exemplo: de forma a que não haja um espa\c{c}imediatamente antes da coordenada x).\end{enumerate} \indent \indent Nesta fun\c{c}ão, foram utilizadas duas fun\c{c}ões auxiliares: \textcolor{cyan}{contaEspa\c{c}os} e \textcolor{cyan}{testaDigitos}. A fun\c{c}ão \textcolor{cyan}{contaEspa\c{c}os conta os caracteres espa\c{c}o} presentes na string recebida. \textcolor{cyan}{testaDigitos} recebe uma string e verifica se todos os seus elementos são dígitos. \newline \indent Para verificar a linha de comandos, foi criada a fun\c{c}ão \textcolor{cyan}{validaProg}, responsável pela valida\c{c}ão da linha de comandos. Para tal, recorremos à fun\c{c}ão predefinida \textcolor{cyan}{all} que testa se os elementos da string são \textbf{A}, \textbf{S}, \textbf{D}, \textbf{E} ou \textbf{L}. } 
+
+
+\newpage
+\subsection{Cálculo da próxima posi\c{c}ão}
+\textsf { \indent Na segunda tarefa do projeto, é pretendido desenvolver um programa que determine qual a posição do \textit{robot} após a execu\c{c}ão do primeiro comando fornecido. Para tal, é assumido que os dados de entrada verificam todas as restrições impostas na Tarefa 1. \newline \indent O \textit{output} desta tarefa é:
+\newline \indent- Se o comando for aplicável, então é apresentada a posição seguinte do \textit{robot} de forma análoga à posi\c{c}ão inicial do \textit{robot}, isto é, numa única linha que contém o x e o y da posição seguinte do \textit{robot} e um caracter que indica a orientação; \newline \indent - Se o comando não for aplicável, o programa deve retornar a mensagem "\textbf{ERRO}".}
+\newline \textsf{\indent Um exemplo de um comando \underline{válido} e do seu \textit{outpu} nesta tarefa é:\newline \indent \indent bbcdA\newline\indent\indent cCaa\newline\indent\indent bbCaa\newline\indent\indent 0 0 N\newline\indent\indent S \newline \indent \indent \textit{Output}: \textbf{0 1 N}
+\newline \indent Um exemplo de um comando \underline{inválido} e do seu \textit{output} para esta tarefa é: \newline\indent\indent bbcdA \newline\indent\indent cdCaa \newline\indent\indent bbCaa \newline\indent\indent 0 0 N \newline\indent\indent A \newline \indent \indent \textit{Output}: \textbf{ERRO}}
+\textsf{\newline \indent Nesta Tarefa 2, definimos que o elemento demonstrativo de erro é o par ((0, 0), 'X'). Antes de mais, definimos a fun\c{c}ão \textcolor{cyan}{outStr} que junta uma lista de linhas numa linha separadas pelos caracteres "\ n". A fun\c{c}ão principal desta tarefa é a \textcolor{cyan}{tarefa2} e, para a definirmos, recorremos a fun\c{c}ões auxiliares:} \begin{itemize}
+\item \textsf{\textcolor{cyan}{stringParaTuplo} - recebe uma string correspondente à linha da posi\c{c}ão e converte-a para um triplo;
+\item \textcolor{cyan}{imprimirValidacao} - recebe o tuplo correspondente à execu\c{c}ão da fun\c{c}ão \textcolor{cyan}{stringParaTuplo} e converte-o numa lista de strings.
+\item \textcolor{cyan}{execCmd} -  executa os comandos de cada tipo. Na defini\c{c}ão desta fun\c{c}ão, recorremos a fun\c{c}ões auxiliares:}
+\begin{itemize}
+\item \textsf{ \textcolor{cyan}{virarE} - recebe uma orienta\c{c}ão e efetua a rota\c{c}ão à esquerda e dá como \textit{output} a orienta\c{c}ão final;
+\item \textcolor{cyan}{virarD} - semelhante à fun\c{c}ão \textcolor{cyan}{virarE} mas esta fun\c{c}ão vira à direita;
+\item \textcolor{cyan}{procuraTab} - recebe um tabuleiro e uma posi\c{c}ão, sendo o \textit{output} a letra correspondente àquela posi\c{c}ão; 
+\item \textcolor{cyan}{avancar} - recebe uma orienta\c{c}ão e uma posi\c{c}ão e dá como \textit{output} as coordenadas da posi\c{c}ão que se obtém avan\c{c}ando uma unidade na orienta\c{c}ão dada.
+\item \textcolor{cyan}{podeAvancar} - esta fun\c{c}ão diz se o \textit{robot} pode ou não avan\c{a}r ou seja, se, após executar o comando "avan\c{c}ar", o \textit{robot} ainda se encontra dentro do tabuleiro.}
+\end{itemize}
+\end{itemize} 
+ 
+
+\newpage
+\subsection{Execu\c{c}ão de programas}
+\textsf{ \indent Nesta terceira tarefa, o programa terá de fazer com que o \textit{robot} execute a sequência de comandos que lhe são fornecidos até acender todas as lâmpadas disponíveis no tabuleiro. Para tal, considera-se que os dados de entrada estão de acordo com todas as restrições especificadas na Tarefa 1, que os comandos são executados em sequência e o \textit{robot} deverá ficar inalterado caso os comandos não sejam aplicáveis. 
+\newline \indent Para a terceira tarefa, existe um tipo de \textit{output} comum a todos os casos (1). Contudo, existem dois tipos de \textit{outputs} que variam (2 e 3):}
+\begin{enumerate}
+
+\item \textsf{Quando é executado um comando \textbf{L} com sucesso, é impressa uma linha com as coordenadas x e y da posição em que o \textit{robot} se encontra;}
+\item \textsf {Quando todas as \textit{lâmpadas} do tabuleiro se encontrarem ligadas, o programa imprime uma linha com a mensagem "\textbf{FIM} tick count" (onde tick count é o número de comandos válidos executados). Independentemente de ainda existirem comandos não processados, o programa termina; }
+\item \textsf{Se a sequência de comandos terminar e ainda existirem \textit{lâmpadas} por ligar no tabuleiro, é a impressa a mensagem "\textbf{INCOMPLETO}".}
+\end{enumerate}
+
+\textsf{ \indent Exemplo de \textit{input} e \textit{output} do formato de saída apresentado no ponto 2:  \newline\indent\indent cbcda \newline\indent\indent bdcaa \newline\indent\indent Bbcaa \newline\indent\indent 0 0 N \newline\indent\indent EDLAS \newline \indent \indent \textit{Output}:0 0 \newline \indent \indent \indent \indent \textbf{FIM} 5 }
+\newline
+\textsf{ \indent Exemplo de \textit{input} e \textit{output} do formato de saída apresentado no ponto 3: \newline\indent\indent aaaaa \newline\indent\indent aaaaa \newline\indent\indent aaaaa \newline\indent\indent AaaaA \newline \indent \indent 0 0 N \newline\indent\indent LAD \newline \indent \indent \textit{Output}:0 0 \newline \indent \indent \indent \indent \textbf{INCOMPLETO} }
+
+\textsf{Tal como na Tarefa 2, nesta terceira tarefa definimos, antes de mais, a fun\c{c}ão \textcolor{cyan}{outStr} cuja fun\c{c}ão é equivalente à da \textcolor{cyan}{outStr} da Tarefa 2. Para a defini\c{c}ão da fun\c{c}ão principal da Tarefa 3, a fun\c{c}ão \textcolor{cyan}{tarefa3}, foi necessário recorrer a fun\c{c}ões auxiliares:} \begin{itemize}
+\item \textsf{ \textcolor{cyan}{stringParaTuplo} - tal como na Tarefa 2, recebe uma string correspondente à linha da posi\c{c}ão e converte-a para um triplo;
+\item \textcolor{cyan}{imprimirValidacao} - é a função responsável pela geração da mensagem de output do programa. 
+\item \textcolor{cyan}{numLampTab} - chama função numeroLampTab com o contador iniciado a 0 que por sua vez atua recursivamente aplicando a função numeroLampLinha à totalidade das linhas do tabuleiro (obtendo a lista de posições de todas as lampadas do tabuleiro); \begin{itemize}
+\item \textcolor{cyan}{numeroLampLinha} - é uma função chamada recursivamente que percorre uma linha do tabuleiro e ao encontrar uma letra maiúscula guarda a sua posição;
+\end{itemize}
+\item \textcolor{cyan}{res} - executa a função execListaCmd para executar a lista de comandos do programa fornecendo como input o tabuleiro, a posição inicial, a orientação inicial, a lista de comandos e a lista das posições das luzes.\begin{itemize}
+\item \textcolor{cyan}{execListaCmd} - executa a lista de comandos. É esta fun\c{c}ão que faz a maior parte do trabalho: executa os comandos, testa as condi\c{c}ões em que tal não acontece, em que os comandos seriam executados fora do tabuleiro e efetua a conta dos comados válidos executados. Para a sua defini\c{c}ão, recorremos a fun\c{c}ões auxiliares: \begin{itemize}
+\item \textcolor{cyan}{virarE} e \textcolor{cyan}{virarD} - recebe uma orienta\c{c}ão e efetua a rota\c{c}ão à esquerda e a direita, respetivamente, sendo o formato de saída a orienta\c{c}ão final;
+\item \textcolor{cyan}{removeAdd} - vê se a posição de uma luz está na lista das posições de todas as luzes do tabuleiro. Se estiver, remove-a; se não estiver, adiciona-a à lista. Para isso foi utilizado um filter e a função elem (pré-definida) que testa a existência de um elemento numa lista;
+\item \textcolor{cyan}{podeAvancar} - esta fun\c{c}ão diz se o \textit{robot} pode ou não avan\c{a}r ou seja, se, após executar o comando "avan\c{c}ar", o \textit{robot} ainda se encontra dentro do tabuleiro.
+\item \textcolor{cyan}{procuraTab} - recebe um tabuleiro e uma posi\c{c}ão e dá como \textit{output} a letra correspondente àquela posi\c{c}ão;
+\item \textcolor{cyan}{avancar} - recebe uma orienta\c{c}ão e uma posi\c{c}ão e o seu \textit{output} são as coordenadas da posi\c{c}ão que se obtém avan\c{c}ando uma unidade no sentido da orienta\c{c}ão dada;
+\end{itemize}
+\end{itemize}
+\item \textcolor{cyan}{remP} - utiliza a função removeP para remover da lista todas as posições com x diferente de -1; este -1 veio da função execListaCmd e serviu para marcar todas as posições que não fossem necessárias (para serem removidas posteriormente);
+\item \textcolor{cyan}{finaLamp} - verifica se o "res" é vazio (i.e. se não foram executados comandos). Se for dá como resultado uma lista vazia (visto que não foi acesa nenhuma lampada); senão dá como output a lista de posições onde estão as luzes que foram acesas;
+\item \textcolor{cyan}{aux} - pega no resultado de remP e fica apenas com o par das posições e dos comandos.
+\item \textcolor{cyan}{numLampAcesas} - faz o length de finaLamp de modo a contar o número de lampadas que foram acesas.}
+\end{itemize}
+
+\newpage
+\subsection{Sintetizar o Programa para o \textit{robot}}
+\textsf{\indent A quarta tarefa do projeto pretende a realiza\c{c}ão de um programa que sintetize um programa para o \textit{robot}. Este programa sintetizado deverá permitir que o \textit{robot}, partindo da dua posi\c{c}ão inicial, acenda todas as lâmpadas do tabuleiro. \newline \indent O \textit{input} desta tarefa assemelha-se aos \textit{inputs} considerados nas tarefas anteriores e assume-se que o \textit{input} é válido. Contudo, nesta fase omite-se a linha referente ao programa. \newline \indent O formato de saída desta penúltima tarefa é a impressão da linha referente ao programa sintetizado.}
+\newline \textsf{ \indent A \textcolor{cyan}{tarefa4} é a fun\c{c}ão princial da Tarefa 4. É desta fun\c{c}ão que resulta a linha de comandos que o robot irá executar. Para a sua defini\c{c}ão, recorremos a fun\c{c}ões auxiliares:} \begin{itemize}
+\item \textsf{ \textcolor{cyan}{tab} - ao receber o tabuleiro completo retira as linhas que são letras (ou, por outra palavras, exclui a linha das posições (penúltima linha) e a dos comandos (que foi omitida para esta tarefa)
+\item \textcolor{cyan}{tabInv} - inverte o tabuleiro para que, ao serem retiradas as posições do tabuleiro com lâmpada, elas venham pela ordem natural correspondente à disposição do tabuleiro.
+\item \textcolor{cyan}{listaPosL} - aplica a função 'posicoesComL' ao tabuleiro invertido (i.e. vai ao tabuleiro e retira as coordenadas das posições que têm lâmpada)
+\item \textcolor{cyan}{stringParaTuplo} - recebe uma lista de \textit{strings} e o seu \textit{output} é um tuplo com a coordenada x inicial, a coordenada y inicial e a orienta\c{c}ão inicial;
+\item \textcolor{cyan}{msg = [moveAcende (numx,numy) o listaPosL tab]} - aplica a função 'moveAcende' (que irá fazer com que o robot se desloque ao longo do tabuleiro e vá acendendo as posições que possuam lâmpada); recebe como input um par com as coordenadas iniciais do robot, a orientação inicial, a lista com as coordenadas das posições do tabuleiro com lâmpada e o tabuleiro (não invertido).}
+\end{itemize}
+\textsf{ \indent As fun\c{c}ões \textcolor{cyan}{posicoesComL}, \textcolor{cyan}{percorreL} e \textcolor{cyan}{funcaoExtL} atuam em conjunto, recebendo um tabuleiro e dando como \textit{output} uma lista com as coordenadas das posi\c{c}ões do tabuleiro que possuem lâmpada. A fun\c{c}ão \textcolor{cyan}{percorreL} percorre cada linha do tabuleiro e verifica as letras do mesmo: se encontrar uma letra maiúscula, ou seja, uma posi\c{c}ão com lâmpada, regista um par com as coordenadas da posi\c{c}ão desta letra maiúscula e continua a percorrer a mesma linha, avan\c{c}ando uma coluna. A fun\c{c}ão \textcolor{cyan}{posicoesComL} está definida à custa da fun\c{c}ão auxiliar \textcolor{cyan}{funcaoExtL} que por sua vez recorre à fun\c{c}ão auxiliar \textcolor{cyan}{percorreL}. Esta última fun\c{c}ão percorre a linha "l" do tabuleiro come\c{c}ando na coluna 0, pois é chamada com o contador de colunas a 0, e regista o par das coordenadas onde houver letras maiúsculas, ou seja, onde existem lâmpadas. De seguida, a fun\c{c}ão \textcolor{cyan}{funcaoExtL} atua recursivamente, chamando de novo a fun\c{c}ão \textcolor{cyan}{percorreL} que desta fez come\c{c}ará na linha "l+1" (a linha a seguir). A fun\c{c}ão \textcolor{cyan}{posicoesComL} combina as duas fun\c{c}ões \textcolor{cyan}{percorreL} e \textcolor{cyan}{funcaoExtL}: recebe um tabuleiro, percorre tanto as linhas como as colunas, e o seu \textit{output} é uma lista com as coordenadas das posi\c{c}ões que possuem lâmpada.}
+\newline \textsf{ \indent A fun\c{c}ão \textcolor{cyan}{moveAcende} atua recursivamente fazendo com que o \textit{robot} se desloque ao longo do tabuleiro e vá acendendo as posi\c{c}ões que possuam lâmpada. Para isso, utiliza a fun\c{c}ão \textcolor{cyan}{move2}.} 
+\textsf{\textcolor{cyan}{moveAcende} vai buscar a lista de comandos necessários para o \textit{robot} se descolar desde a posi\c{c}ão inicial até à posi\c{c}ão final e, após isso, junta-lhe uma outra lista com apenas o comando \textbf{L}, para acender as lâmpadas. Depois, \textcolor{cyan}{moveAcende} atua recursivamente na causa da lista das posi\c{c}ões com luz, utilizando como orienta\c{c}ão a resultante da desloca\c{c}ão do \textit{robot} da posi\c{c}ão inicial até à primeira lâmpada. A fun\c{c}ão \textcolor{cyan}{move2} recebe como \textit{input} uma posi\c{c}ão inicial e uma posi\c{c}ão final, uma orienta\c{c}ão inicial e o tabuleiro. O seu \textit{output} é um par com a orienta\c{c}ão final e a lista de comandos que são necessários para o \textit{robot} se deslocar da posi\c{c}ão inicial para a final. Este movimento do \textit{robot} é dividido em duas partes: primeiro o \textit{robot} acerta a coordenada x e depois a y.} \begin{itemize}
+\item \textsf{ \textcolor{cyan}{moveX2} - 
+recebe duas posi\c{c}ões, uma inical e uma final, uma orienta\c{c}ão inicial e o tabuleiro. Esta fun\c{c}ão apenas 
+acerta as coordenadas x. Para isso, utiliza a fun\c{c}ão \textcolor{cyan}{moveX} para se mover da posi\c{c}ão inicial (a,b) paa a posi\c{c}ão intermédia (x,y) (posi\c{c}ão com a mesma abcissa da posi\c{c}ão final. \textcolor{cyan}{moveX2} guarda a lista de comandos necessários para que o \textit{robot} efetue este movimento e a orienta\c{c}ão com que irá finalizar o movimento sob a forma de um par. Estes comandos são gerados pela fun\c{c}ão \textcolor{cyan}{mudaX2}.} 
+\newline \indent \textsf{ \textcolor{cyan}{moveX2} verifica se a posi\c{c}ão inicial é diferente da posi\c{c}ão final. Se não for dirente, esta fun\c{c}ão não atua, pois as abcissas são iguais. O \textit{output} será o par com a orienta\c{c}ão inicial que é igual à final e uma lista de comandos vazia, uma vez que não existiu qualquer movimento do \textit{robot}.}
+\newline\textsf{\indent Se as abcissas forem diferentes, \textcolor{cyan}{moveX2} verifica se a abcissa final tem valor superior ou inferior à inicial.} \begin{itemize}
+\item \textsf{ Se tiver valor superior, a fun\c{c}ão verifica se ao ser aplicada a fun\c{c}ão \textcolor{cyan}{avancar} com orienta\c{c}ão definida \textbf{E} (pois o \textit{robot} quer ir para uma posic{c}ão com abcissa superior, logo, terá de se orientar para Este) a abcissa da posi\c{c}ão resultante continua a ser menor ou igual à abcissa final.} \begin{itemize}
+\item \textsf{Se isto acontecer, o programa dá-nos como \textit{output} um par com a orienta\c{c}ão final, que neste caso é \textbf{E}ste, e uma lista com a jun\c{c}ão da lista de comandos necessários para que o \textit{robot} ajuste a sua orienta\c{c}ão para Este com a lista de comandos necessários para que o \textit{robot} se desloque da posi\c{c}ão inicial para a posi\c{c}ão final.}
+\item \textsf{Se isto não acontecer, o programa dará como \textit{output} um par com a orienta\c{c}ão final, que neste caso será igual à inicial, e uma lista de comandos vazia pois não existiu qualquer movimento do \textit{robot}.}
+\end{itemize}
+\item \textsf{Se a posi\c{c}ão final estiver à esquerda da posi\c{c}ão inicial, isto é, se a sua abcissa ser inferior à da posi\c{c}ão inicial, a fun\c{c}ão comporta-se da mesma maneira mas desta vez utiliza a orienta\c{c}ão \textbf{O}este. Diferem também os sinais de maior/menor.}
+\end{itemize}
+
+
+
+
+\textsf{ \indent \textcolor{cyan}{mudaX2} é uma fun\c{c}ão que recebe como \textit{input} duas posi\c{c}ões (uma inicial e uma final), uma orienta\c{c}ão inicial e um tabuleiro. O \textit{output} é a lista de comandos que são necessários para o \textit{robot} se movimentar para a posi\c{c}ão final a partir da inicial. Esta fun\c{c}ão apenas acerta as coordenadas x. \textcolor{cyan}{mudaX2} verifica se o x inicial é diferente do x final. Se não for diferente, esta fun\c{c}ão não atua pois as posi\c{c}ões têm abcissas iguais. Quando isto acontece, o \textit{output} é uma lista de comandos vazia.}
+\newline\textsf{\indent Se as abcissas dorem diferentes, a fun\c{c}ão verifica se ao ser aplicada a fun\c{c}ão \textcolor{cyan}{avancar} o \textit{robot} se desloca de duas posi\c{c}ões no mesmo nível. Para isso, utiliza a fun\c{c}ão pré-definida \textcolor{cyan}{toLower} nas letras das posi\c{c}ões inicial e final. Estas letras são obtidas devido à utiliza\c{c}ão da fun\c{c}ão \textcolor{cyan}{procuraTab} por sua vez aplicada à posi\c{c}ão (a,b) e à posi\c{c}ão resultante da execu\c{c}ão da fun\c{c}ão (avancar o (a,b)).}\begin{itemize}
+\item \textsf{ Se isto acontecer, ou seja, se as posi\c{c}ões inicial e final estiverem no mesmo nível, o \textit{robot} está em condi\c{c}ões de executar o comando \textbf{S}altar. Assim, o \textit{output} desta fun\c{c}ão é a jun\c{c}ão da lista com o comando \textbf{S} com a lista de comandos resultante da chamada recursiva de \textcolor{cyan}{mudaX2}. A chamada recursiva é feita utilizando a posi\c{c}ão que se obtém da posi\c{c}ão inicial executando a fun\c{c}ão \textcolor{cyan}{avancar} e a posi\c{c}ão final (x,y).
+\item Se isto não acontecer, o \textit{robot} não conseguirá nem \textbf{S}altar nem \textbf{A}van\c{c}ar. Assim, o \textit{output} da fun\c{c}ão será uma lista de comandos vazia.}
+\end{itemize}
+
+\item \textsf{ \textcolor{cyan}{moveY2} - define a segunda e última parte do movimento da fun\c{c}ão \textcolor{cyan}{move2}: acerta as coordenadas y. Para isso, utiliza a fun\c{c}ão \textcolor{cyan}{moveY} para se mover de (x,b) (posi\c{c}ão intermédia) para a posi\c{c}ão final (x,y). A orienta\c{c}ão utilizada no \textit{input} é a orienta\c{c}ão resultante do acerto das coordenadas x, obtida através da fun\c{c}ão \textcolor{cyan}{moveX2}. Guarda mais uma vez um ar com a lista de comandos necessários para que o \textit{robot} efetue este moviemnto, bem como a orienta\c{c}ão com que irá finalizar o movimento. \textcolor{cyan}{moveY2} está definida analogamente à fun\c{c}ão \textcolor{cyan}{moveX2}, sendo que esta acertará as coordenadas y em vez das x e utilizará as orienta\c{c}ões
+\textbf{N}orte/\textbf{S}ul em vez de 
+\textbf{E}ste/\textbf{O}este.}
+\textsf{ \indent \textcolor{cyan}{mudaY2} é uma fun\c{c}ão definida analogamente à fun\c{c}ão \textcolor{cyan}{mudaX2}, sendo que agora acertará as coordenadas y e não as x.}
+\end{itemize}
+\indent \textsf{ \indent \textcolor{cyan}{virarE} recebe uma orienta\c{c}ão e efetua a rota\c{c}ão para a esquerda, dando como \textit{output} a orienta\c{c}ão final.} \newline
+\indent \textsf{ \textcolor{cyan}{virarD} é uma fun\c{c}ão semelhante a \textcolor{cyan}{virarE}, apenas varia o facto de \textcolor{cyan}{virarD} efetuar a rota\c{c}ão à direita.}
+\newline
+\indent \textsf{ \textcolor{cyan}{avancar} recebe uma orienta\c{c}ão e uma posi\c{c}ão e dá como \textit{output} as coordenadas da posi\c{c}ão que se obtém avan\c{c}ando uma unidade na orienta\c{c}ão dada.}
+\newline
+\indent \textsf{ \textcolor{cyan}{procuraTab} recebe um tabuleiro e uma posi\c{c}ão e dá como \textit{output} a letra correspondente àquela posi\c{c}ão.}
+
+\newpage
+\subsection{Visualiza\c{c}ão}
+\textsf{ \indent Esta última tarefa pretende a visualiza\c{c}ão do jogo, recorrendo, para isso, ao formato \textit{X3dom}. Para a realiza\c{c}ão esta Tarefa 5, é necessário criar um código em Haskell que reproduza em} xhtml \textsf{ o tabuleiro fornecido.
+\newline \indent O \textit{input} desta tarefa é fornecido segundo o formato de entrada adotado logo na primeira tarefa.
+\newline \indent O \textit{output} é a impressão do código} xhtml\textsf{ de uma página web que permita visualizar o \textit{robot} e o respetivo tabuleiro fornecido.}
+\newline \textsf{ \indent A \textcolor{cyan}{funcao5} é a fun\c{c}ão principal da Tarefa 5. É dela que resulta o código} html \textsf{que servirá para visualizar o jogo.
+\newline \indent \textcolor{cyan}{tab=takeWhile (all isAlpha) txt} - ao receber o tabuleiro completo, retira as linhas que são letras: retira a linha das posi\c{c}ões e a linha dos comandos (omitida para esta tarefa.
+\newline \indent \textcolor{cyan}{(numx, numy, o) = stringPAraTuplo (words (txt!!(lenght txt-1)))} - a fun\c{c}ão pré-definida \textcolor{cyan}{mwords} é aplicada à linha das posi\c{c}ões, criando uma lista de strings, dividindo as várias strings onde houver um espa\c{c}o. Esta linha de strings já poderá ser utilizada pela fun\c{c}ão \textcolor{cyan}{stringParaTuplo}. Esta fun\c{c}ão irá pegar nessa lista de strings e dará como \textit{output} um tuplo com as coordenadas e orienta\c{c}ão iniciais.
+\newline \indent \textcolor{cyan}{numLinhas=length tab} - é aplicada a fun\c{c}ão pré-definida \textcolor{cyan}{length} ao tabuleiro para saber o número de linhas do mesmo.
+\newline \indent \textcolor{cyan}{altPosInicial=desenharRobotAux (procuraTab tab (numx,numy))} - é chamada a fun\c{c}ão \textcolor{cyan}{desenharRobotAux} com o \textcolor{cyan}{procuraTab} da posi\c{c}ão inicial ((numx, numy)), de forma a que o programa saiba qual o inteiro correspondente à altura da letra que indica a posi\c{c}ão inicial do \textit{robot}. A \textcolor{cyan}{altPosInicial} corresponde ao valor da altura da posi\c{c}ão inicial do \textit{robot} somado de uma unidade (para que o \textit{robot} não se encontre na posi\c{c}ão do cubo superior mas sim um pouco mais acima).
+\newline \indent \textcolor{cyan}{text=prefixo} e \textcolor{cyan}{sufixo} - são chamadas as fun\c{c}ões \textcolor{cyan}{prefixo} e \textcolor{cyan}{sufixo}. A fun\c{c}são \textcolor{cyan}{prefixo} dá como \textit{output} as partes do código necessárias à  visualiza\c{c}ão do jogo mas que não sofrem altera\c{c}oes de tabuleiro para tabuleiro e que contêm informa\c{c}ões como, por exemplo, a defini\c{c}ão das formas usadas nos cubos. O \textit{output} da fun\c{c}ão \textcolor{cyan}{prefixo} são as tags de fecho que servem para terminar o código html.
+\newline \indent \textcolor{cyan}{criaTabuleiro tab (numLinhas - 1)} - é também chamada a fun\c{c}ão \textcolor{cyan}{criaTabuleiro} que gera o código para a visualiza\c{c}ão do tabuleiro. É chamada com \textit{input} do tabuleiro e do número de linhas subtraído de uma unidade.
+\newline \indent \textcolor{cyan}{desenharRobot (numx, (-1*numy)) altPosInicial} - a fun\c{c}ão \textcolor{cyan}{desenharRobot} encarrega-se de gerar o código para o visualiza\c{c}ão do \textit{robot} na sua posi\c{c}ão inicial e com o valor calculado em \textcolor{cyan}{altPosInicial}.}
+\newline \textsf{ \indent \textcolor{cyan}{strinParaTuplo} - o \textit{input} é uma lista de strings e o \textit{output} é um tuplo com as coordenadas x e y iniciais e a orienta\c{c}ão inicial.
+\newline \indent \textcolor{cyan}{(read (s!!0)::Int, read (s!!1)::Int, head(s!!2))} - recebe a linha das posi\c{c}ões do tabuleiro, utilizando a fun\c{c}ão \textcolor{cyan}{read} lê o primeiro elemento da string, isto é, o elemento de índice 0 e interpreta-o como um inteiro (para poder ser usado como tal posteriormente), lê o elemento de índice 1 e interpreta-o também como um inteiro e lê também o elemento de índice 2, imterpretanto-o como um} char. 
+\newline \indent \textsf{ A fun\c{c}ão \textcolor{cyan}{procuraTab} recebe o tabuleiro e uma posi\c{c}ão. O seu formato de saída é a letra correspondente àquela posi\c{c}ão.
+\newline \indent \textcolor{cyan}{prefixo} é a fun\c{c}ão que dá como \textit{output} a parte do código} html \textsf{necessária à visualiza\c{c}ão do jogo mas que não sofre altera\c{c}ões de tabuleiro para tabuleiro e que está imediatamente antes do excerto do código de} html \textsf{que é gerado de forma a visualizar cada um dos tabuleiros específicos. Esta função contém duas partes:} \begin{enumerate}
+\item \textsf{Parte inicial de abertura da página} html \textsf{e da componente do} X3DOM \textsf{que tornarão possível a visualiza\c{c}ão das figuras, respetivamente.
+\item Parte final que contém uma cena (<Scene>) em que estão descritas as figuras que serão utilizadas para a visualiza\c{c}ão do tabuleiro e do \textit{robot}.}
+\end{enumerate}
+
+\textsf{\indent \textcolor{cyan}{criaTabuleiro} utiliza a fun\c{c}ão \textcolor{cyan}{criaLinhas} para gerar a parte do código} html \textsf{encarregue da visualiza\c{c}ão da totalidade de um determinado tabuleiro. O \textit{input} é o prório tabuleiro bem como um inteiro correspondente ao número total de linhas do mesmo.
+\newline \indent \textcolor{cyan}{criaLinhas h 0 (-1*numLinhas)} - é chamada a fun\c{c}ão \textcolor{cyan}{criaLinhas} com a primeira linha do tabuleiro, o inteiro correspondente à coordenada x a 0. Assim, a fun\c{c}ão \textcolor{cyan}{criaLinhas} começará na posi\c{c}ão (0, <número de linhas do tabuleiro>) e, recursivamente, irá gerá o código necesserário à visualiza\c{c}ão da totalidade da primeira linha.
+\newline \indent \textcolor{cyan}{(criaTabuleiro t (numLinhas-1))} - de seguida, é chamada a fun\c{c}ão \textcolor{cyan}{criaTabuleiro} recursivamente, chamando, por sua vez, a fun\c{c}ão \textcolor{cyan}{criaLinhas} para as restantes linhas do tabuleiro até que se chegue ao caso de paragem, em que o tabuleiro foi totalmente percorrido e encontra-se vazio.
+\newline \indent \textcolor{cyan}{criaLinhas} utiliza a fun\c{c}ão \textcolor{cyan}{altura} para percorrer uma linha de um tabuleiro e gerar o código} html \textsf{necessário para a visualiza\c{c}ão dessa mesma linha.
+\newline \indent \textcolor{cyan}{(altura h x (ord(toLower h)-(ord'a')) z)} - chama a fun\c{c}ão \textcolor{cyan}{altura} com o primeiro caracter da linha, com a abcissa da posi\c{c}ão, com a coordenada z (que no} X3DOM \textsf{corresponde à coordenada y das tarefas anteriores e com o número correspondente à letra da posi\c{c}ão do tabuleiro definido pela fun\c{c}ão \textcolor{cyan}{ord(toLower h)-(ord 'a')}. Daqui são obtidos valores diferentes para cada uma das letras testadas e estes valores correspondem ao nível da posi\c{c}ão. O \textit{output} desta fun\c{c}ão é o código} xhtml \textsf{que servirá para colocar os cubos numa determinada posi\c{c}ão até à altura da letra dessa mesma posi\c{c}ão.}
+\newline \indent \textcolor{cyan}{(criaLinhas t (x+1) z)} - No fim, a fun\c{c}ão chama-se recursivamente, efetuando um processo análogo ao anterior, percorrendo a totalidade da linha até que se chegue ao fim da mesma (o caso de paragem).
+\newline \indent A fun\c{c}ão \textcolor{cyan}{altura} recebe um caracter correspondente a uma única posi\c{c}ão do tabuleiro e vai colocando cubos até à altura dessa mesma posi\c{c}ão. Além disso, testa também se este mesmo caracter é maiúsculo, isto é, se possui uma lâmpada. Se sim, utiliza a shape "cuboL" em vez da "cubo".
+\newline \indent \textcolor{cyan}{altura ch x 0 z} - Aqui está definido o caso de a posi\c{c}ão se encontrar na altura 0. A fun\c{c}ão testa se o caracter da posi\c{c}ão é maiúsculo. Em caso afirmativo, a fun\c{c}ão coloca um culo com lâmpada (shape "cuboL") na posi\c{c}ão, colocando a altura a 0. Se o caracter não for maiúsculo, a fun\c{c}ão efetuará um processo idêntico usando antes a shape "cubo" para substituir a shape "cuboL".
+
+\indent \textcolor{cyan}{altura ch x h z} - Por fim, está definido o caso de a posi\c{c}ão se encontrar numa altura diferente de 0. A fun\c{c}ão começa por testar se o caracter é maiúsculo e usa a shape "cubo" ou "cuboL" de acordo com o resultado deste teste. Depois coloca um cubo na posi\c{c}ão e com a altura correspondente à letra em questão. Finalmente, esta fun\c{c}ão é chamada recursivamente voltando a repetir todo este processo até que a altura correspondente à letra da posi\c{c}ão seja posta a 0, voltanto, assim, ao primeiro caso da fun\c{c}ão.
+{(criaLinhas t (x+1) z)} - No fim, a fun\c{c}ão chama-se recursivamente, efetuando um processo análogo ao anterior, percorrendo a totalidade da linha até que se chegue ao fim da mesma (o caso de paragem).
+\newline \indent \textcolor{cyan}{desenharRobot} - recebe a posição inicial do robot e um inteiro (que posteriormente irá corresponder à altura da posição onde se encontra inicialmente) para gerar o código responsável pela visualização do próprio robot na posição inicial e em cima do cubo do tabuleiro correspondente a esta mesma posição.
+\newline \indent \textcolor{cyan}{função desenharRobotAux} - irá dar à função 'desenharRobot' o valor da altura a que robot se encontrará. Para isso utiliza a diferença entre o ord do carater da posição em questão e o ord da letra a somado de uma unidade para que o robot não se encontre na posição do cubo superior mas sim um pouco mais acima.
+
+\newpage
+\section{Conclusão}
+\textsf{ \indent Com a realiza\c{c}ão deste projeto, foi-nos possível aprofundar o conhecimento sobre Haskell e, principalmente, pôr em prática todos os conhecimentos adequiridos nas aulas teóricas e teorico-praticas de Programa\c{c}ão Funcional.  
+\newline \indent Como alunos do 1º ano do curso de Lincenciatura em Engenharia Informática, e estando, alguns de nós, a programar pela primeira vez, este primeiro projeto elaborado permitiu-nos a ambienta\c{c}ão ao "mundo" da programa\c{c}ão e promoveu um abrir de horizontes para o fundamental neste curso: programar.}
+
+\end{document}
