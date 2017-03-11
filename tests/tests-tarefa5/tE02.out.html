@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Trabalho de LI de João Barreira e Sofia Carvalho</title>
+<script src="http://www.x3dom.org/release/x3dom.js"></script>
+<link rel="stylesheet" href="http://www.x3dom.org/release/x3dom.css"/>
+</head>
+<body>
+<h1>Visualização do Tabuleiro do Lightbot</h1>
+<p class="case">
+<X3D xmlns="http://www.web3d.org/specifications/x3d-namespace" id="boxes"
+showStat="false" showLog="false" x="0px" y="0px" width="500px" height="500px">
+<Scene>
+<Shape DEF="cubo">
+<Appearance>
+<Material diffuseColor='0 0 1.0'></Material>
+</Appearance>
+<Box size='.96 .96 .96'></Box>
+</Shape>
+<Shape DEF="cuboL">
+<Appearance>
+<Material emissiveColor='0 0 1.0'></Material>
+</Appearance>
+<Box size='.96 .96 .96'></Box>
+</Shape>
+<Group render="false">
+<Shape DEF="robot">
+<Appearance>
+<Material diffuseColor='0 .5 0'></Material>
+</Appearance>
+<Box size='.60 1 .60'></Box>
+</Shape>
+</Group>
+<Transform translation='0 0 -2'> <Shape USE="cuboL"> </Transform>
+<Transform translation='1 0 -2'> <Shape USE="cubo"> </Transform>
+<Transform translation='2 0 -2'> <Shape USE="cubo"> </Transform>
+<Transform translation='0 0 -1'> <Shape USE="cubo"> </Transform>
+<Transform translation='1 0 -1'> <Shape USE="cuboL"> </Transform>
+<Transform translation='2 0 -1'> <Shape USE="cubo"> </Transform>
+<Transform translation='0 0 0'> <Shape USE="cubo"> </Transform>
+<Transform translation='1 0 0'> <Shape USE="cubo"> </Transform>
+<Transform translation='2 0 0'> <Shape USE="cubo"> </Transform>
+<Transform translation='1 1 -1'> <Shape USE="robot"> </Transform>
+</Scene>
+</X3D>
+</p>
+<p> &nbsp; </p>
+</body>
+</html>
