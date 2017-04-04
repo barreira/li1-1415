@@ -1,4 +1,4 @@
-#LI1
+# LI1
 ### Nota final do trabalho: 15 em 20.
 
 Projeto da U.C. de Laboratórios de Informática I (2014/2015)
